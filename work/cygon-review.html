@@ -299,6 +299,11 @@
     100% { opacity: 1; transform: scale(1); }
   }
 
+  @keyframes row-filter-in {
+    from { opacity: 0; transform: translateY(5px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
   /* Row exit animation */
   @keyframes device-row-out {
     0%   { opacity: 1; transform: translateY(0); }
@@ -913,7 +918,7 @@
             <div class="device-rows">
 
               <!-- Row 1: Smart TVs -->
-              <div class="device-row fade-up fade-up-4" id="row-tvs" onclick="toggleRow('tvs', event)">
+              <div class="device-row fade-up fade-up-4" data-regloc="telaviv" id="row-tvs" onclick="toggleRow('tvs', event)">
                 <div class="device-row-top">
                   <div class="device-row-left">
                     <div class="device-badge">
@@ -983,7 +988,7 @@
               </div>
 
               <!-- Row 2: Door Locks -->
-              <div class="device-row fade-up fade-up-4" id="row-locks" onclick="toggleRow('locks', event)">
+              <div class="device-row fade-up fade-up-4" data-regloc="telaviv" id="row-locks" onclick="toggleRow('locks', event)">
                 <div class="device-row-top">
                   <div class="device-row-left">
                     <div class="device-badge">
@@ -1052,7 +1057,7 @@
               </div>
 
               <!-- Row 3: Access Points -->
-              <div class="device-row fade-up fade-up-5" id="row-aps" onclick="toggleRow('aps', event)">
+              <div class="device-row fade-up fade-up-5" data-regloc="telaviv" id="row-aps" onclick="toggleRow('aps', event)">
                 <div class="device-row-top">
                   <div class="device-row-left">
                     <div class="device-badge">
@@ -1817,7 +1822,7 @@ function switchFunctionalTab(tab, btn) {
   if (btn) btn.classList.add('page-tab--active');
   const newSec = document.getElementById('tab-new-section');
   const regSec = document.getElementById('tab-registered-section');
-  if (tab === 'all') { newSec.style.display = ''; regSec.style.display = ''; }
+  if (tab === 'all') { newSec.style.display = ''; regSec.style.display = 'none'; }
   else if (tab === 'new') { newSec.style.display = ''; regSec.style.display = 'none'; }
   else { newSec.style.display = 'none'; regSec.style.display = ''; }
 }
@@ -1890,20 +1895,42 @@ function closeSidePanel() {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+  function animatedFilter(section, id, tabBtns) {
+    const rows = Array.from(document.querySelectorAll(section + ' .device-row[data-regloc]'));
+    const toShow = rows.filter(r => id === 'all' || r.dataset.regloc === id);
+    const toHide = rows.filter(r => id !== 'all' && r.dataset.regloc !== id);
+
+    // Fade out visible rows that will be hidden
+    toHide.forEach(row => {
+      if (row.style.display !== 'none') {
+        row.style.transition = 'opacity 110ms ease, transform 110ms ease';
+        row.style.opacity = '0';
+        row.style.transform = 'translateY(-4px)';
+      }
+    });
+
+    setTimeout(() => {
+      toHide.forEach(row => { row.style.display = 'none'; row.style.transition = ''; row.style.opacity = ''; row.style.transform = ''; });
+      toShow.forEach((row, i) => {
+        row.style.display = '';
+        row.style.animation = 'none';
+        row.offsetHeight; // force reflow
+        row.style.animation = 'row-filter-in 160ms ease both';
+        row.style.animationDelay = (i * 30) + 'ms';
+      });
+    }, 120);
+  }
+
   window.switchTab = function(btn, id) {
     document.querySelectorAll('#tab-new-section .tab-btn').forEach(t => t.classList.remove('tab-btn--active'));
     btn.classList.add('tab-btn--active');
-    document.querySelectorAll('#tab-new-section .device-row[data-loc]').forEach(row => {
-      row.style.display = (id === 'all' || row.dataset.loc === id) ? '' : 'none';
-    });
+    animatedFilter('#tab-new-section', id, '#tab-new-section .tab-btn');
   };
 
   window.switchTabReg = function(btn, id) {
     document.querySelectorAll('#tab-registered-section .tab-btn').forEach(t => t.classList.remove('tab-btn--active'));
     btn.classList.add('tab-btn--active');
-    document.querySelectorAll('#tab-registered-section .device-row[data-regloc]').forEach(row => {
-      row.style.display = (id === 'all' || row.dataset.regloc === id) ? '' : 'none';
-    });
+    animatedFilter('#tab-registered-section', id, '#tab-registered-section .tab-btn');
   };
 });
 </script>
