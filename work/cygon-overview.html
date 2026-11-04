@@ -88,7 +88,7 @@
   /* ── CONTENT PANEL ── */
   .content-panel {
     flex: 1; min-width: 0;
-    background: linear-gradient(175.9deg, rgba(255,255,255,0.85) 0%, rgba(236,239,248,0.85) 78.641%);
+    background: white;
     border-top-left-radius: 16px; border-left: 1px solid #e7e9ef; border-top: 1px solid #e7e9ef;
     display: flex; flex-direction: column; overflow: hidden; position: relative; z-index: 1;
   }
@@ -96,13 +96,12 @@
     position: absolute; inset: 0; pointer-events: none; z-index: 0; overflow: hidden;
     border-top-left-radius: 16px;
   }
-  .content-glow::after {
-    content: '';
+  .content-glow img {
     position: absolute;
-    width: 1500px; height: 760px;
-    left: 50%; top: 0; transform: translateX(-50%);
-    background: radial-gradient(ellipse at 50% 20%, rgba(188,212,255,0.38) 0%, rgba(210,225,252,0.14) 45%, transparent 70%);
-    pointer-events: none;
+    width: 1200px; height: 920px;
+    left: 50%; top: -60px;
+    transform: translateX(-50%);
+    pointer-events: none; user-select: none;
   }
 
   /* ── OVERVIEW SCROLL AREA ── */
@@ -213,7 +212,8 @@
   .widgets-bottom-row { display: flex; gap: 24px; }
   .widget-card {
     background: white;
-    border-radius: 12px;
+    border-radius: 16px;
+    border: 1px solid #d0d4e4;
     padding: 20px;
     flex: 1 0 0; min-width: 0;
     display: flex; flex-direction: column;
@@ -411,7 +411,9 @@
   <!-- CONTENT PANEL -->
   <main class="content-panel">
 
-    <div class="content-glow" aria-hidden="true"></div>
+    <div class="content-glow" aria-hidden="true">
+      <img src="../uploads/ellipse-glow.png" alt="">
+    </div>
 
     <div class="overview-scroll">
 
