@@ -913,9 +913,11 @@
             <button class="tab-btn" onclick="switchTab(this,'eilat')">Eilat / 5</button>
           </div>
           <div class="device-list-area">
+            <div id="recommended-header">
             <p class="list-heading">Recommended to add</p>
             <p class="list-subheading">All 19 devices passed automated screening — network alignment, manufacturer policy, and connectivity verified.</p>
-            <div class="device-rows">
+            </div>
+            <div class="device-rows" id="new-device-rows">
 
               <!-- Row 1: Smart TVs -->
               <div class="device-row fade-up fade-up-4" data-regloc="telaviv" id="row-tvs" onclick="toggleRow('tvs', event)">
@@ -1165,7 +1167,7 @@
           <!-- REGISTERED TAB CONTENT -->
           <div id="tab-registered-section" style="display:none">
           <!-- Location tabs (segmented control) -->
-          <div class="tabs-row">
+          <div class="tabs-row" id="inv-loc-tabs">
             <button class="tab-btn tab-btn--active" onclick="switchTabReg(this,'all')">All / 270</button>
             <button class="tab-btn" onclick="switchTabReg(this,'telaviv')">Tel Aviv / 122</button>
             <button class="tab-btn" onclick="switchTabReg(this,'jerusalem')">Jerusalem / 76</button>
@@ -1822,9 +1824,9 @@ function switchFunctionalTab(tab, btn) {
   if (btn) btn.classList.add('page-tab--active');
   const newSec = document.getElementById('tab-new-section');
   const regSec = document.getElementById('tab-registered-section');
-  if (tab === 'all') { newSec.style.display = ''; regSec.style.display = 'none'; }
+  if (tab === 'all') { newSec.style.display = ''; regSec.style.display = ''; const lt = document.getElementById('inv-loc-tabs'); if (lt) lt.style.display = 'none'; }
   else if (tab === 'new') { newSec.style.display = ''; regSec.style.display = 'none'; }
-  else { newSec.style.display = 'none'; regSec.style.display = ''; }
+  else { newSec.style.display = 'none'; regSec.style.display = ''; const lt = document.getElementById('inv-loc-tabs'); if (lt) lt.style.display = ''; }
 }
 
 function addAllDevices(type) {
@@ -1895,42 +1897,62 @@ function closeSidePanel() {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-  function animatedFilter(section, id, tabBtns) {
+  function animatedFilter(section, id) {
     const rows = Array.from(document.querySelectorAll(section + ' .device-row[data-regloc]'));
     const toShow = rows.filter(r => id === 'all' || r.dataset.regloc === id);
-    const toHide = rows.filter(r => id !== 'all' && r.dataset.regloc !== id);
+    const toHide = rows.filter(r => id !== 'all' && r.dataset.regloc !== id).filter(r => r.style.display !== 'none');
 
-    // Fade out visible rows that will be hidden
+    // Lock the container height to prevent layout jumps
+    const container = document.querySelector(section + ' .device-rows');
+    if (container) {
+      container.style.minHeight = container.offsetHeight + 'px';
+    }
+
+    // Fade out outgoing rows (opacity only — no translateY to avoid jump)
     toHide.forEach(row => {
-      if (row.style.display !== 'none') {
-        row.style.transition = 'opacity 110ms ease, transform 110ms ease';
-        row.style.opacity = '0';
-        row.style.transform = 'translateY(-4px)';
-      }
+      row.style.transition = 'opacity 100ms ease';
+      row.style.opacity = '0';
     });
 
     setTimeout(() => {
-      toHide.forEach(row => { row.style.display = 'none'; row.style.transition = ''; row.style.opacity = ''; row.style.transform = ''; });
+      toHide.forEach(row => {
+        row.style.display = 'none';
+        row.style.transition = '';
+        row.style.opacity = '';
+      });
+
+      // Update "Recommended to add" header visibility (New tab only)
+      const header = document.getElementById('recommended-header');
+      if (header) {
+        const anyVisible = toShow.length > 0;
+        header.style.display = anyVisible ? '' : 'none';
+      }
+
       toShow.forEach((row, i) => {
         row.style.display = '';
         row.style.animation = 'none';
-        row.offsetHeight; // force reflow
+        row.offsetHeight;
         row.style.animation = 'row-filter-in 160ms ease both';
         row.style.animationDelay = (i * 30) + 'ms';
       });
-    }, 120);
+
+      // Release height lock after incoming animation completes
+      if (container) {
+        setTimeout(() => { container.style.minHeight = ''; }, 200 + toShow.length * 30);
+      }
+    }, 110);
   }
 
   window.switchTab = function(btn, id) {
     document.querySelectorAll('#tab-new-section .tab-btn').forEach(t => t.classList.remove('tab-btn--active'));
     btn.classList.add('tab-btn--active');
-    animatedFilter('#tab-new-section', id, '#tab-new-section .tab-btn');
+    animatedFilter('#tab-new-section', id);
   };
 
   window.switchTabReg = function(btn, id) {
     document.querySelectorAll('#tab-registered-section .tab-btn').forEach(t => t.classList.remove('tab-btn--active'));
     btn.classList.add('tab-btn--active');
-    animatedFilter('#tab-registered-section', id, '#tab-registered-section .tab-btn');
+    animatedFilter('#tab-registered-section', id);
   };
 });
 </script>
