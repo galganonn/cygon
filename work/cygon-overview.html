@@ -423,57 +423,77 @@
       <!-- STATUS BRIEF -->
       <div class="widgets-frame fade-up fade-up-1" style="flex-direction:row;padding:20px;gap:16px;">
 
-          <!-- AI Brief card -->
-          <div style="flex:5;min-width:0;background:white;border-radius:12px;padding:20px 24px;display:flex;flex-direction:column;gap:14px;">
-
-            <!-- Headline -->
-            <span style="font-family:'Poppins',sans-serif;font-style:normal;font-weight:600;font-size:22px;color:#111827;line-height:1.3;">74 devices matched and ready to add.</span>
-
-            <!-- Body -->
-            <p style="font-size:14px;color:#676879;font-family:'Figtree',sans-serif;line-height:1.6;margin:0;">I matched Smart TVs, door locks and access points to your hotel's systems. See how I matched them before adding to your inventory.</p>
-
-            <!-- Footer -->
-            <div style="display:flex;align-items:center;gap:10px;margin-top:2px;">
-              <button style="display:flex;align-items:center;gap:7px;background:#0073EA;color:white;border:none;border-radius:8px;padding:9px 16px;font-size:14px;font-weight:500;font-family:'Figtree',sans-serif;cursor:pointer;white-space:nowrap;" onmouseover="this.style.background='#0060c7'" onmouseout="this.style.background='#0073EA'">
-                Review 74 devices
-                <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M8 3l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </button>
-            </div>
-
-          </div>
-
           <!-- Anomaly Alert card -->
-          <div style="flex:3;min-width:0;background:white;border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:14px;">
+          <div style="flex:3;min-width:0;background:white;border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:14px;position:relative;">
 
-            <!-- Top row: icon + badge -->
-            <div style="display:flex;align-items:center;justify-content:space-between;">
-              <div style="width:32px;height:32px;border-radius:8px;background:#fde8ec;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#9a1527" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <!-- Badge (absolute, doesn't push title down) -->
+            <span class="badge-critical" style="position:absolute;top:20px;right:20px;">Critical priority</span>
+
+            <!-- Title with inline icon -->
+            <div style="display:flex;flex-direction:column;gap:6px;">
+              <div style="display:flex;align-items:center;gap:8px;padding-right:110px;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9a1527" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;">
                   <path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/>
                 </svg>
+                <span style="font-size:18px;font-weight:600;color:#111827;font-family:'Poppins',sans-serif;line-height:1.35;">One device needs your attention</span>
               </div>
-              <span class="badge-critical">Critical priority</span>
-            </div>
-
-            <!-- Title + device -->
-            <div style="display:flex;flex-direction:column;gap:6px;">
-              <span style="font-size:15px;font-weight:600;color:#111827;font-family:'Figtree',sans-serif;line-height:1.35;">One device needs your attention</span>
-              <span style="font-size:13px;font-weight:600;color:#323338;font-family:'Figtree',sans-serif;">Reolink camera · Floor 7, Tel Aviv</span>
+              <span style="font-size:13px;font-weight:600;color:#323338;font-family:'Figtree',sans-serif;padding-left:24px;">Reolink camera · Floor 7, Tel Aviv</span>
             </div>
 
             <!-- Description -->
-            <span style="font-size:13px;color:#676879;font-family:'Figtree',sans-serif;line-height:1.5;">Connected to a public network instead of Seaside-CCTV. Can't be added to inventory until this is resolved.</span>
+            <span style="font-size:16px;color:#676879;font-family:'Figtree',sans-serif;line-height:1.5;">Connected to a public network instead of Seaside-CCTV. Can't be added to inventory until this is resolved.</span>
 
             <!-- Footer: timestamp + CTA -->
             <div style="display:flex;align-items:center;justify-content:space-between;margin-top:auto;">
               <div style="display:flex;align-items:center;gap:6px;">
                 <div class="pulse-dot"></div>
-                <span style="font-size:11px;color:#9a1527;font-family:'Figtree',sans-serif;font-weight:500;">Detected 14 min ago</span>
+                <span style="font-size:11px;color:#676879;font-family:'Figtree',sans-serif;font-weight:500;">Detected 14 min ago</span>
               </div>
-              <a href="#" style="display:inline-flex;align-items:center;gap:4px;font-size:13px;font-weight:500;color:#9a1527;font-family:'Figtree',sans-serif;text-decoration:none;">
+              <a href="#" style="display:inline-flex;align-items:center;gap:4px;font-size:13px;font-weight:500;color:#0073EA;font-family:'Figtree',sans-serif;text-decoration:none;">
                 Review this device
                 <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M8 3l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </a>
+            </div>
+
+          </div>
+
+          <!-- AI Brief card -->
+          <div style="flex:5;min-width:0;background:white;border-radius:12px;padding:20px 24px;display:flex;flex-direction:column;gap:14px;">
+
+            <!-- Headline with inline icon -->
+            <div style="display:flex;align-items:center;gap:10px;">
+              <svg viewBox="0 0 24 24" fill="none" width="20" height="20" stroke="#7c5cbf" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;">
+                <path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/>
+                <path d="M20 3v4M22 5h-4M4 17v2M5 18H3"/>
+              </svg>
+              <span style="font-family:'Poppins',sans-serif;font-style:normal;font-weight:600;font-size:18px;color:#111827;line-height:1.3;">74 devices matched and ready to add.</span>
+            </div>
+
+            <!-- Body -->
+            <p style="font-size:16px;color:#676879;font-family:'Figtree',sans-serif;line-height:1.6;margin:0;">I scanned <strong style="color:#323338;">501 devices</strong> and identified <strong style="color:#323338;">3 organizational systems</strong> with <strong style="color:#323338;">74 unregistered devices</strong>. I checked each device against 5 criteria — <strong style="color:#323338;">no violations found</strong> across all 3 systems.</p>
+
+            <!-- Device type chips -->
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+              <div style="display:inline-flex;align-items:center;gap:6px;background:#f1f3f7;border-radius:20px;padding:6px 12px;">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#676879" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="13" rx="2"/><polyline points="17 2 12 7 7 2"/></svg>
+                <span style="font-size:13px;color:#323338;font-family:'Figtree',sans-serif;">Room TVs <strong>· 47</strong></span>
+              </div>
+              <div style="display:inline-flex;align-items:center;gap:6px;background:#f1f3f7;border-radius:20px;padding:6px 12px;">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#676879" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                <span style="font-size:13px;color:#323338;font-family:'Figtree',sans-serif;">Door Locks <strong>· 18</strong></span>
+              </div>
+              <div style="display:inline-flex;align-items:center;gap:6px;background:#f1f3f7;border-radius:20px;padding:6px 12px;">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#676879" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+                <span style="font-size:13px;color:#323338;font-family:'Figtree',sans-serif;">Access Points <strong>· 9</strong></span>
+              </div>
+            </div>
+
+            <!-- Footer -->
+            <div style="display:flex;align-items:center;gap:10px;margin-top:auto;">
+              <button style="display:flex;align-items:center;gap:7px;background:#0073EA;color:white;border:none;border-radius:8px;padding:9px 16px;font-size:14px;font-weight:500;font-family:'Figtree',sans-serif;cursor:pointer;white-space:nowrap;" onmouseover="this.style.background='#0060c7'" onmouseout="this.style.background='#0073EA'">
+                Review and approve
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M8 3l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
             </div>
 
           </div>
@@ -483,107 +503,101 @@
       <!-- WIDGETS -->
       <div class="widgets-frame fade-up fade-up-2">
 
-        <!-- ROW 1: AI Recommendations | Devices by Type | Review Status -->
+        <!-- ROW 1: Devices ready to add | Active Networks | Coverage by location -->
         <div class="widgets-top-row">
 
-          <!-- AI Inventory Recommendations -->
+          <!-- Devices ready to add -->
           <div class="widget-card">
             <span class="widget-title">Devices ready to add</span>
             <div style="height:20px;"></div>
-
-            <!-- Main number -->
             <div style="display:flex;align-items:flex-end;gap:8px;">
               <span class="widget-number">74</span>
               <span style="font-family:'Figtree',sans-serif;font-size:14px;color:#676879;line-height:1;margin-bottom:6px;">devices to add</span>
             </div>
             <div style="height:12px;"></div>
-
-            <!-- Confidence bar -->
             <div style="height:8px;border-radius:4px;overflow:hidden;display:flex;gap:2px;">
               <div style="flex:74;background:#22c55e;border-radius:3px 0 0 3px;"></div>
               <div style="flex:9;background:#f59e0b;"></div>
               <div style="flex:1;background:#ef4444;border-radius:0 3px 3px 0;"></div>
             </div>
             <div style="height:14px;"></div>
-
-            <!-- Legend -->
             <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
               <div style="display:flex;align-items:center;gap:5px;">
                 <div style="width:7px;height:7px;border-radius:50%;background:#22c55e;"></div>
-                <span style="font-size:12px;color:#676879;font-family:'Figtree',sans-serif;"><span style="font-weight:600;color:#323338;">74</span> Approved</span>
+                <span style="font-size:13px;color:#676879;font-family:'Figtree',sans-serif;"><span style="font-weight:600;color:#323338;">74</span> Approved</span>
               </div>
               <div style="display:flex;align-items:center;gap:5px;">
                 <div style="width:7px;height:7px;border-radius:50%;background:#f59e0b;"></div>
-                <span style="font-size:12px;color:#676879;font-family:'Figtree',sans-serif;"><span style="font-weight:600;color:#323338;">9</span> Needs review</span>
+                <span style="font-size:13px;color:#676879;font-family:'Figtree',sans-serif;"><span style="font-weight:600;color:#323338;">9</span> Needs review</span>
               </div>
               <div style="display:flex;align-items:center;gap:5px;">
                 <div style="width:7px;height:7px;border-radius:50%;background:#ef4444;"></div>
-                <span style="font-size:12px;color:#676879;font-family:'Figtree',sans-serif;"><span style="font-weight:600;color:#323338;">1</span> Blocked</span>
+                <span style="font-size:13px;color:#676879;font-family:'Figtree',sans-serif;"><span style="font-weight:600;color:#323338;">1</span> Blocked</span>
               </div>
             </div>
             <div style="height:20px;"></div>
-
-            <!-- System chips -->
             <div style="display:flex;flex-direction:column;gap:7px;">
               <div style="display:flex;align-items:center;gap:7px;">
                 <div style="width:18px;height:18px;border-radius:5px;background:#dcfce7;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
                   <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><polyline points="1.5,5.5 4,8 8.5,2" stroke="#16a34a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </div>
-                <span style="font-size:13px;color:#323338;font-family:'Figtree',sans-serif;">Smart TVs (Samsung/LG) — <strong>47</strong></span>
+                <span style="font-size:14px;color:#323338;font-family:'Figtree',sans-serif;">Smart TVs (Samsung/LG) — <strong>47</strong></span>
               </div>
               <div style="display:flex;align-items:center;gap:7px;">
                 <div style="width:18px;height:18px;border-radius:5px;background:#dcfce7;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
                   <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><polyline points="1.5,5.5 4,8 8.5,2" stroke="#16a34a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </div>
-                <span style="font-size:13px;color:#323338;font-family:'Figtree',sans-serif;">Door Locks (ASSA ABLOY) — <strong>18</strong></span>
+                <span style="font-size:14px;color:#323338;font-family:'Figtree',sans-serif;">Door Locks (ASSA ABLOY) — <strong>18</strong></span>
               </div>
               <div style="display:flex;align-items:center;gap:7px;">
                 <div style="width:18px;height:18px;border-radius:5px;background:#dcfce7;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
                   <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><polyline points="1.5,5.5 4,8 8.5,2" stroke="#16a34a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </div>
-                <span style="font-size:13px;color:#323338;font-family:'Figtree',sans-serif;">Access Points (Ubiquiti) — <strong>9</strong></span>
+                <span style="font-size:14px;color:#323338;font-family:'Figtree',sans-serif;">Access Points (Ubiquiti) — <strong>9</strong></span>
               </div>
             </div>
-
           </div>
 
-          <!-- Devices by Type (donut arc) -->
+          <!-- Active Networks (replaces donut) -->
           <div class="widget-card">
-            <div style="display:flex;align-items:center;justify-content:space-between;width:100%;">
-              <span class="widget-title">Devices by type</span>
-              <a href="#" style="font-size:14px;color:#676879;text-decoration:none;font-family:'Figtree',sans-serif;">View All</a>
-            </div>
+            <span class="widget-title">Active networks</span>
             <div style="height:20px;"></div>
-            <div style="display:flex;align-items:center;gap:16px;">
-
-              <!-- Legend -->
-              <div style="display:flex;flex-direction:column;gap:14px;flex:1;">
-                <div style="display:flex;align-items:flex-start;gap:7px;">
-                  <div style="width:7px;height:7px;border-radius:50%;background:#93c5fd;flex-shrink:0;margin-top:4px;"></div>
-                  <span style="font-size:13px;color:#323338;line-height:18px;"><strong>52%</strong> Smart TVs (47)</span>
+            <div style="display:flex;flex-direction:column;gap:9px;">
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:#f6f7fb;border-radius:8px;">
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <div style="width:7px;height:7px;border-radius:50%;background:#22c55e;flex-shrink:0;"></div>
+                  <span style="font-size:14px;color:#323338;font-family:'Figtree',sans-serif;">Seaside-IoT</span>
                 </div>
-                <div style="display:flex;align-items:flex-start;gap:7px;">
-                  <div style="width:7px;height:7px;border-radius:50%;background:#86efac;flex-shrink:0;margin-top:4px;"></div>
-                  <span style="font-size:13px;color:#323338;line-height:18px;"><strong>20%</strong> Door Locks (18)</span>
-                </div>
-                <div style="display:flex;align-items:flex-start;gap:7px;">
-                  <div style="width:7px;height:7px;border-radius:50%;background:#fca5a5;flex-shrink:0;margin-top:4px;"></div>
-                  <span style="font-size:13px;color:#323338;line-height:18px;"><strong>10%</strong> Cameras (9)</span>
-                </div>
-                <div style="display:flex;align-items:flex-start;gap:7px;">
-                  <div style="width:7px;height:7px;border-radius:50%;background:#c4b5fd;flex-shrink:0;margin-top:4px;"></div>
-                  <span style="font-size:13px;color:#323338;line-height:18px;"><strong>18%</strong> Other (16)</span>
-                </div>
+                <span style="font-size:13px;color:#676879;font-family:'Figtree',sans-serif;">Online</span>
               </div>
-
-              <!-- C-arc donut -->
-              <svg width="110" height="110" viewBox="0 0 120 110" style="flex-shrink:0;">
-                <path d="M 30.3 81.7 A 42 42 0 1 1 89.7 81.7" fill="none" stroke="#f1f5f9" stroke-width="14" stroke-linecap="butt"/>
-                <path d="M 30.3 81.7 A 42 42 0 1 1 89.7 81.7" fill="none" stroke="#93c5fd" stroke-width="14" stroke-linecap="butt" pathLength="100" stroke-dasharray="51 49" stroke-dashoffset="0"/>
-                <path d="M 30.3 81.7 A 42 42 0 1 1 89.7 81.7" fill="none" stroke="#86efac" stroke-width="14" stroke-linecap="butt" pathLength="100" stroke-dasharray="20 80" stroke-dashoffset="-53"/>
-                <path d="M 30.3 81.7 A 42 42 0 1 1 89.7 81.7" fill="none" stroke="#fca5a5" stroke-width="14" stroke-linecap="butt" pathLength="100" stroke-dasharray="10 90" stroke-dashoffset="-75"/>
-                <path d="M 30.3 81.7 A 42 42 0 1 1 89.7 81.7" fill="none" stroke="#c4b5fd" stroke-width="14" stroke-linecap="butt" pathLength="100" stroke-dasharray="17 83" stroke-dashoffset="-87"/>
-              </svg>
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:#f6f7fb;border-radius:8px;">
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <div style="width:7px;height:7px;border-radius:50%;background:#22c55e;flex-shrink:0;"></div>
+                  <span style="font-size:14px;color:#323338;font-family:'Figtree',sans-serif;">Seaside-CCTV</span>
+                </div>
+                <span style="font-size:13px;color:#676879;font-family:'Figtree',sans-serif;">Online</span>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:#f6f7fb;border-radius:8px;">
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <div style="width:7px;height:7px;border-radius:50%;background:#22c55e;flex-shrink:0;"></div>
+                  <span style="font-size:14px;color:#323338;font-family:'Figtree',sans-serif;">Seaside-Mgmt</span>
+                </div>
+                <span style="font-size:13px;color:#676879;font-family:'Figtree',sans-serif;">Online</span>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:#fde8ec;border-radius:8px;">
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <div style="width:7px;height:7px;border-radius:50%;background:#ef4444;flex-shrink:0;"></div>
+                  <span style="font-size:14px;color:#323338;font-family:'Figtree',sans-serif;">Guest WiFi</span>
+                </div>
+                <span style="font-size:12px;font-weight:600;color:#9a1527;font-family:'Figtree',sans-serif;">2 issues</span>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:#f6f7fb;border-radius:8px;">
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <div style="width:7px;height:7px;border-radius:50%;background:#22c55e;flex-shrink:0;"></div>
+                  <span style="font-size:14px;color:#323338;font-family:'Figtree',sans-serif;">BLE</span>
+                </div>
+                <span style="font-size:13px;color:#676879;font-family:'Figtree',sans-serif;">Online</span>
+              </div>
             </div>
           </div>
 
@@ -592,8 +606,6 @@
             <span class="widget-title">Coverage by location</span>
             <div style="height:26px;"></div>
             <div style="display:flex;flex-direction:column;gap:14px;width:100%;">
-
-              <!-- Tel Aviv -->
               <div style="display:flex;flex-direction:column;gap:6px;">
                 <div style="display:flex;align-items:center;justify-content:space-between;">
                   <span style="font-size:14px;color:#323338;font-family:'Figtree',sans-serif;font-weight:500;">Tel Aviv</span>
@@ -604,8 +616,6 @@
                 </div>
                 <span style="font-size:12px;color:#676879;font-family:'Figtree',sans-serif;">Seaside-IoT · Seaside-CCTV · BLE</span>
               </div>
-
-              <!-- Jerusalem -->
               <div style="display:flex;flex-direction:column;gap:6px;">
                 <div style="display:flex;align-items:center;justify-content:space-between;">
                   <span style="font-size:14px;color:#323338;font-family:'Figtree',sans-serif;font-weight:500;">Jerusalem</span>
@@ -616,8 +626,6 @@
                 </div>
                 <span style="font-size:12px;color:#676879;font-family:'Figtree',sans-serif;">Seaside-IoT · Seaside-Mgmt</span>
               </div>
-
-              <!-- Eilat -->
               <div style="display:flex;flex-direction:column;gap:6px;">
                 <div style="display:flex;align-items:center;justify-content:space-between;">
                   <div style="display:flex;align-items:center;gap:6px;">
@@ -631,168 +639,87 @@
                 </div>
                 <span style="font-size:12px;color:#676879;font-family:'Figtree',sans-serif;">Honeywell HVAC only</span>
               </div>
-
             </div>
           </div>
 
         </div>
 
-        <!-- ROW 2: Top at Risk | Findings | Providers -->
+        <!-- ROW 2: Devices needing attention (consolidated) | Inventory health -->
         <div class="widgets-bottom-row">
 
-          <!-- Top devices at risk (anomalies) -->
-          <div class="widget-card" style="display:flex;flex-direction:column;">
+          <!-- Devices needing attention — consolidated (Reolink removed, Policy issues merged) -->
+          <div class="widget-card" style="flex:2;display:flex;flex-direction:column;">
             <span class="widget-title">Devices needing attention</span>
-            <div style="height:24px;"></div>
-            <div style="display:flex;flex-direction:column;justify-content:space-between;flex:1;gap:16px;">
-
-              <!-- Reolink CRITICAL -->
-              <div style="display:flex;align-items:center;gap:8px;">
-                <div style="width:32px;height:32px;border-radius:8px;background:#fde8ec;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9a1527" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/>
-                  </svg>
-                </div>
-                <div style="flex:1;min-width:0;">
-                  <div style="font-size:12px;color:#676879;line-height:1.4;font-family:'Figtree',sans-serif;">Seaside-CCTV · Floor 7, Tel Aviv</div>
-                  <div style="font-size:12px;font-weight:600;color:#323338;line-height:1.4;font-family:'Figtree',sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Reolink (EC:71:DB:8C:98:5A)</div>
-                  <div style="font-size:12px;color:#676879;line-height:1.4;font-family:'Figtree',sans-serif;">Not in Inventory · cannot add</div>
-                </div>
-                <span class="badge-critical" style="flex-shrink:0;">CRITICAL</span>
-              </div>
+            <div style="height:20px;"></div>
+            <div style="display:flex;flex-direction:column;gap:12px;">
 
               <!-- Hikvision MEDIUM -->
-              <div style="display:flex;align-items:center;gap:8px;">
+              <div style="display:flex;align-items:flex-start;gap:10px;padding:14px;border:1px solid #fef3c7;border-radius:10px;background:#fffdf9;">
                 <div style="width:32px;height:32px;border-radius:8px;background:#fff7ed;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a85d00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/>
                   </svg>
                 </div>
                 <div style="flex:1;min-width:0;">
-                  <div style="font-size:12px;color:#676879;line-height:1.4;font-family:'Figtree',sans-serif;">Seaside-CCTV · Floor 5, Jerusalem</div>
-                  <div style="font-size:12px;font-weight:600;color:#323338;line-height:1.4;font-family:'Figtree',sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Hikvision (BC:AD:28:F9:0F:2D)</div>
-                  <div style="font-size:12px;color:#676879;line-height:1.4;font-family:'Figtree',sans-serif;">Wrong network · running without management</div>
+                  <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:5px;">
+                    <span style="font-size:14px;font-weight:600;color:#111827;font-family:'Figtree',sans-serif;">Hikvision (BC:AD:28:F9:0F:2D)</span>
+                    <span class="badge-medium" style="flex-shrink:0;">MEDIUM</span>
+                  </div>
+                  <div style="font-size:13px;color:#676879;font-family:'Figtree',sans-serif;margin-bottom:2px;">Seaside-CCTV · Floor 5, Jerusalem</div>
+                  <div style="font-size:13px;color:#676879;font-family:'Figtree',sans-serif;">Wrong network — running without management</div>
                 </div>
-                <span class="badge-medium" style="flex-shrink:0;">MEDIUM</span>
               </div>
 
-              <!-- TP-Link IoT LOW -->
-              <div style="display:flex;align-items:center;gap:8px;">
-                <div style="width:32px;height:32px;border-radius:8px;background:#f1f5f9;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="10"/><path d="M4.93 4.93l14.14 14.14"/>
+              <!-- TP-Link + Sonos MEDIUM (merged from Policy issues) -->
+              <div style="display:flex;align-items:flex-start;gap:10px;padding:14px;border:1px solid #fef3c7;border-radius:10px;background:#fffdf9;">
+                <div style="width:32px;height:32px;border-radius:8px;background:#fff7ed;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a85d00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="1" y1="1" x2="23" y2="23"/><path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"/><path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"/><path d="M10.71 5.05A16 16 0 0 1 22.56 9"/><path d="M1.42 9a15.91 15.91 0 0 1 4.7-2.88"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/>
                   </svg>
                 </div>
                 <div style="flex:1;min-width:0;">
-                  <div style="font-size:12px;color:#676879;line-height:1.4;font-family:'Figtree',sans-serif;">Guest WiFi · Jerusalem</div>
-                  <div style="font-size:12px;font-weight:600;color:#323338;line-height:1.4;font-family:'Figtree',sans-serif;">TP-Link + Sonos (2 devices)</div>
-                  <div style="font-size:12px;color:#676879;line-height:1.4;font-family:'Figtree',sans-serif;">Personal device · can't be managed</div>
+                  <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:5px;">
+                    <span style="font-size:14px;font-weight:600;color:#111827;font-family:'Figtree',sans-serif;">TP-Link + Sonos (2 devices)</span>
+                    <span class="badge-medium" style="flex-shrink:0;">MEDIUM</span>
+                  </div>
+                  <div style="font-size:13px;color:#676879;font-family:'Figtree',sans-serif;margin-bottom:2px;">Guest WiFi · Jerusalem</div>
+                  <div style="font-size:13px;color:#676879;font-family:'Figtree',sans-serif;">Personal devices on guest network — not allowed, cannot be managed</div>
                 </div>
-                <span style="background:#f1f5f9;color:#6b7280;border-radius:20px;padding:4px 10px;font-size:12px;font-weight:600;font-family:'Figtree',sans-serif;white-space:nowrap;flex-shrink:0;">LOW</span>
               </div>
 
             </div>
           </div>
 
-          <!-- Violations / Findings -->
-          <div class="widget-card">
-            <span class="widget-title">Policy issues</span>
-            <div style="height:24px;"></div>
-            <div style="display:flex;flex-direction:column;gap:16px;">
-
-              <div style="border:1px solid #eae5ed;border-radius:10px;background:white;padding:12px 14px;display:flex;flex-direction:column;gap:6px;">
-                <div style="display:flex;align-items:center;justify-content:space-between;">
-                  <span style="font-size:14px;font-weight:700;color:#101024;font-family:'Figtree',sans-serif;">Unmanaged Camera on CCTV</span>
-                  <span class="badge-critical">CRITICAL</span>
-                </div>
-                <p style="font-size:14px;color:#50505d;font-family:'Figtree',sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.4;margin:0;">Reolink detected on security VLAN — not in Inventory</p>
-                <a href="#" style="font-size:12px;color:#0073ea;font-family:'Figtree',sans-serif;text-decoration:none;">See details</a>
-              </div>
-
-              <div style="border:1px solid #eae5ed;border-radius:10px;background:white;padding:12px 14px;display:flex;flex-direction:column;gap:6px;">
-                <div style="display:flex;align-items:center;justify-content:space-between;">
-                  <span style="font-size:14px;font-weight:700;color:#101024;font-family:'Figtree',sans-serif;">IoT on Guest Network</span>
-                  <span class="badge-medium">MEDIUM</span>
-                </div>
-                <p style="font-size:14px;color:#50505d;font-family:'Figtree',sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.4;margin:0;">TP-Link + Sonos on guest WiFi — not allowed on this network</p>
-                <a href="#" style="font-size:12px;color:#0073ea;font-family:'Figtree',sans-serif;text-decoration:none;">See details</a>
-              </div>
-
+          <!-- Inventory health (new) -->
+          <div class="widget-card" style="display:flex;flex-direction:column;">
+            <span class="widget-title">Inventory health</span>
+            <div style="height:20px;"></div>
+            <div style="display:flex;flex-direction:column;gap:4px;">
+              <span style="font-size:32px;font-weight:700;color:#101024;font-family:'Figtree',sans-serif;line-height:1;">160</span>
+              <span style="font-size:14px;color:#676879;font-family:'Figtree',sans-serif;">Devices in inventory</span>
             </div>
-          </div>
-
-          <!-- Devices by provider -->
-          <div class="widget-card">
-            <span class="widget-title">Devices by provider</span>
-            <div style="height:24px;"></div>
-            <div style="display:flex;flex-direction:column;gap:22px;padding:0 9px;">
-
-              <div style="display:flex;gap:0;justify-content:space-between;">
-                <!-- Samsung/LG -->
-                <div style="display:flex;flex-direction:column;justify-content:space-between;height:88px;width:94px;">
-                  <div style="display:flex;align-items:center;gap:5px;">
-                    <div style="width:22px;height:22px;border-radius:5px;background:#e0f2fe;display:flex;align-items:center;justify-content:center;">
-                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0369a1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="2" y="7" width="20" height="13" rx="2"/><polyline points="17 2 12 7 7 2"/>
-                      </svg>
-                    </div>
-                    <span style="font-size:11px;color:#676879;font-family:'Figtree',sans-serif;font-weight:500;">Samsung/LG</span>
-                  </div>
-                  <div style="display:flex;flex-direction:column;gap:4px;">
-                    <span style="font-size:25px;font-weight:700;color:#101024;line-height:1.3;font-family:'Figtree',sans-serif;">47</span>
-                    <span style="font-size:13px;color:#50505d;line-height:1.3;font-family:'Figtree',sans-serif;">Smart TVs</span>
-                  </div>
-                </div>
-                <!-- ASSA ABLOY -->
-                <div style="display:flex;flex-direction:column;justify-content:space-between;height:88px;width:94px;">
-                  <div style="display:flex;align-items:center;gap:5px;">
-                    <div style="width:22px;height:22px;border-radius:5px;background:#f0fdf4;display:flex;align-items:center;justify-content:center;">
-                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#166534" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-                      </svg>
-                    </div>
-                    <span style="font-size:11px;color:#676879;font-family:'Figtree',sans-serif;font-weight:500;">ASSA ABLOY</span>
-                  </div>
-                  <div style="display:flex;flex-direction:column;gap:4px;">
-                    <span style="font-size:25px;font-weight:700;color:#101024;line-height:1.3;font-family:'Figtree',sans-serif;">18</span>
-                    <span style="font-size:13px;color:#50505d;line-height:1.3;font-family:'Figtree',sans-serif;">Door Locks</span>
-                  </div>
-                </div>
+            <div style="height:20px;"></div>
+            <div style="height:1px;background:#e2e6ed;"></div>
+            <div style="height:20px;"></div>
+            <div style="display:flex;flex-direction:column;gap:12px;">
+              <div style="display:flex;align-items:center;justify-content:space-between;">
+                <span style="font-size:14px;color:#676879;font-family:'Figtree',sans-serif;">Pending addition</span>
+                <span style="font-size:14px;font-weight:600;color:#323338;font-family:'Figtree',sans-serif;">74</span>
               </div>
-
-              <div style="display:flex;gap:0;justify-content:space-between;">
-                <!-- Ubiquiti -->
-                <div style="display:flex;flex-direction:column;justify-content:space-between;height:88px;width:94px;">
-                  <div style="display:flex;align-items:center;gap:5px;">
-                    <div style="width:22px;height:22px;border-radius:5px;background:#f5f3ff;display:flex;align-items:center;justify-content:center;">
-                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#6d28d9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/>
-                      </svg>
-                    </div>
-                    <span style="font-size:11px;color:#676879;font-family:'Figtree',sans-serif;font-weight:500;">Ubiquiti</span>
-                  </div>
-                  <div style="display:flex;flex-direction:column;gap:4px;">
-                    <span style="font-size:25px;font-weight:700;color:#101024;line-height:1.3;font-family:'Figtree',sans-serif;">9</span>
-                    <span style="font-size:13px;color:#50505d;line-height:1.3;font-family:'Figtree',sans-serif;">Access Points</span>
-                  </div>
-                </div>
-                <!-- Honeywell -->
-                <div style="display:flex;flex-direction:column;justify-content:space-between;height:88px;width:94px;">
-                  <div style="display:flex;align-items:center;gap:5px;">
-                    <div style="width:22px;height:22px;border-radius:5px;background:#fef9c3;display:flex;align-items:center;justify-content:center;">
-                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#854d0e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/>
-                      </svg>
-                    </div>
-                    <span style="font-size:11px;color:#676879;font-family:'Figtree',sans-serif;font-weight:500;">Honeywell</span>
-                  </div>
-                  <div style="display:flex;flex-direction:column;gap:4px;">
-                    <span style="font-size:25px;font-weight:700;color:#101024;line-height:1.3;font-family:'Figtree',sans-serif;">9</span>
-                    <span style="font-size:13px;color:#50505d;line-height:1.3;font-family:'Figtree',sans-serif;">HVAC</span>
-                  </div>
-                </div>
+              <div style="display:flex;align-items:center;justify-content:space-between;">
+                <span style="font-size:14px;color:#676879;font-family:'Figtree',sans-serif;">Last scan</span>
+                <span style="font-size:14px;font-weight:600;color:#323338;font-family:'Figtree',sans-serif;">Today, 7:14 AM</span>
               </div>
-
+              <div style="display:flex;align-items:center;justify-content:space-between;">
+                <span style="font-size:14px;color:#676879;font-family:'Figtree',sans-serif;">Online now</span>
+                <span style="font-size:14px;font-weight:600;color:#22c55e;font-family:'Figtree',sans-serif;">147 / 160</span>
+              </div>
+            </div>
+            <div style="margin-top:auto;padding-top:20px;">
+              <a href="#" style="font-size:13px;color:#0073ea;font-family:'Figtree',sans-serif;text-decoration:none;display:flex;align-items:center;gap:4px;">
+                View full inventory
+                <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M8 3l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </a>
             </div>
           </div>
 
