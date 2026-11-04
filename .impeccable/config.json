@@ -11,6 +11,15 @@
         ],
         "createdAt": "2026-11-04T13:47:29.722Z",
         "reason": "Text at #676879 is on white card backgrounds (not the gradient frame); WCAG contrast ~4.82:1 passes AA"
+      },
+      {
+        "rule": "dark-glow",
+        "value": "*",
+        "files": [
+          "work/cygon-overview.html"
+        ],
+        "createdAt": "2026-11-04T13:57:14.728Z",
+        "reason": "User explicitly asked to replicate the NewCore box-shadow (rgba(1,116,235,0.1) 0px 20px 50px) — same shadow extracted from galganonn.github.io/newcore; user confirmed direction"
       }
     ]
   }
