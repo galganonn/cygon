@@ -175,7 +175,7 @@
   .kpi-status--red    { color: #df2f4a; }
   .kpi-status--gray   { color: #676879; }
 
-  /* ── PAGE-LEVEL TABS (All / New / Registered) ── */
+  /* ── PAGE-LEVEL TABS (All / New / Inventory) ── */
   .page-tabs-strip {
     display: flex;
     padding: 0 80px;
@@ -235,7 +235,7 @@
   .tab-btn:last-child { border-right: none; }
   .tab-btn--active { background: #0073EA; color: white; }
 
-  /* Registered tab content */
+  /* Inventory tab content */
   .reg-row {
     display: flex; align-items: center; gap: 12px;
     padding: 14px 16px; background: white;
@@ -844,7 +844,7 @@
 
       </div><!-- /review-body -->
 
-      <!-- PAGE-LEVEL TABS: All / New / Registered -->
+      <!-- PAGE-LEVEL TABS: All / New / Inventory -->
       <div class="page-tabs-strip fade-up fade-up-4">
         <button class="page-tab page-tab--active" onclick="switchFunctionalTab('all',this)">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -865,7 +865,7 @@
             <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
             <path d="m9 12 2 2 4-4"/>
           </svg>
-          Registered
+          Inventory
         </button>
       </div>
 
@@ -1136,7 +1136,7 @@
           <!-- REGISTERED TAB CONTENT -->
           <div id="tab-registered-section" style="display:none">
             <div class="device-list-area">
-              <p class="list-heading">Registered devices</p>
+              <p class="list-heading">Inventory</p>
               <p class="list-subheading">270 devices across 6 categories — all active on the Seaside Hotels network.</p>
               <div class="device-rows" style="gap:8px;">
 
@@ -1506,7 +1506,7 @@ function showRegisteredToast(count, name) {
   const t = document.createElement('div');
   t.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#323338;color:white;padding:10px 18px;border-radius:10px;font-size:13px;font-family:Figtree,sans-serif;z-index:200;white-space:nowrap;display:flex;align-items:center;gap:12px;box-shadow:0 4px 16px rgba(0,0,0,0.25);';
   const link = document.createElement('button');
-  link.textContent = 'View in Registered →';
+  link.textContent = 'View in Inventory →';
   link.style.cssText = 'background:rgba(255,255,255,0.15);border:none;color:white;padding:4px 10px;border-radius:6px;font-size:12px;font-weight:500;font-family:Figtree,sans-serif;cursor:pointer;';
   link.onclick = () => {
     const btn = document.querySelector('.page-tab:nth-child(3)');
