@@ -88,7 +88,9 @@
   /* ── CONTENT PANEL ── */
   .content-panel {
     flex: 1; min-width: 0;
-    background: linear-gradient(175.9deg, rgba(255,255,255,0.85) 0%, rgba(236,239,248,0.85) 78.641%);
+    background:
+      linear-gradient(180deg, rgba(200,218,252,0.6) 0%, rgba(255,255,255,0) 44%),
+      linear-gradient(175.9deg, rgba(255,255,255,0.85) 0%, rgba(236,239,248,0.85) 78.641%);
     border-top-left-radius: 16px; border-left: 1px solid #e7e9ef; border-top: 1px solid #e7e9ef;
     display: flex; flex-direction: column; overflow: hidden; position: relative; z-index: 1;
   }
@@ -421,10 +423,10 @@
       </div>
 
       <!-- STATUS BRIEF -->
-      <div class="widgets-frame fade-up fade-up-1" style="flex-direction:row;padding:20px;gap:16px;background:linear-gradient(rgba(236,239,248,0.5) 4.19%,rgba(255,255,255,0.5) 32.44%);border:1px solid white;box-shadow:rgba(1,116,235,0.1) 0px 20px 50px 0px;">
+      <div class="widgets-frame fade-up fade-up-1" style="flex-direction:row;padding:20px;gap:16px;background:rgba(255,255,255,0.28);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.75);box-shadow:0 8px 32px rgba(0,80,200,0.06);">
 
           <!-- Anomaly Alert card -->
-          <div style="flex:3;min-width:0;background:white;border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:14px;position:relative;">
+          <div style="flex:3;min-width:0;background:#fffcfc;border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:14px;position:relative;box-shadow:inset 4px 0 0 #9a1527;">
 
             <!-- Badge (absolute, doesn't push title down) -->
             <span class="badge-critical" style="position:absolute;top:20px;right:20px;">Critical priority</span>
