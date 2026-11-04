@@ -107,7 +107,6 @@
     flex: 1; min-height: 0; overflow-y: auto;
     display: flex; flex-direction: column;
     position: relative; z-index: 1;
-    padding-bottom: 80px;
   }
   .review-scroll::-webkit-scrollbar { width: 5px; }
   .review-scroll::-webkit-scrollbar-track { background: transparent; }
@@ -257,14 +256,33 @@
     white-space: nowrap;
   }
 
-  /* Row fade-out animation */
+  /* Row exit animation */
   @keyframes device-row-out {
-    0% { opacity: 1; transform: scale(1); }
-    100% { opacity: 0; transform: scale(0.97); }
+    0%   { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(-8px); }
   }
-  .device-row--removing {
-    animation: device-row-out 350ms ease forwards;
+  .device-row.device-row--removing {
+    animation: device-row-out 400ms cubic-bezier(0.22,1,0.36,1) forwards !important;
     pointer-events: none;
+  }
+
+  /* Button loader */
+  @keyframes btn-spin {
+    to { transform: rotate(360deg); }
+  }
+  .row-add-all-btn--loading {
+    opacity: 0.72;
+    pointer-events: none;
+    gap: 0;
+  }
+  .btn-spinner {
+    display: inline-block;
+    width: 14px; height: 14px;
+    border: 2px solid rgba(255,255,255,0.35);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: btn-spin 650ms linear infinite;
+    flex-shrink: 0;
   }
 
   /* ── DEVICE LIST AREA ── */
@@ -1224,17 +1242,6 @@
 
     </div>
 
-    <!-- BOTTOM ACTION BAR -->
-    <div class="action-bar">
-      <span class="action-bar-info" id="action-bar-info"><strong>74 devices</strong> across 3 systems — no policy violations</span>
-      <div class="action-bar-buttons">
-        <button class="btn-secondary">Skip for now</button>
-        <button class="btn-primary" id="action-bar-approve">
-          Approve all 19
-          <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M8 3l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
-      </div>
-    </div>
 
   </main>
 
@@ -1464,9 +1471,16 @@ function switchFunctionalTab(tab, btn) {
 function addAllDevices(type) {
   const data = DEVICE_TYPES[type];
   const row = document.getElementById('row-' + type);
-  row.classList.add('device-row--removing');
-  setTimeout(() => { row.style.display = 'none'; }, 360);
-  showRegisteredToast(data.devices.length, data.name);
+  const btn = row.querySelector('.row-add-all-btn');
+  if (btn) {
+    btn.innerHTML = '<span class="btn-spinner"></span>';
+    btn.classList.add('row-add-all-btn--loading');
+  }
+  setTimeout(() => {
+    row.classList.add('device-row--removing');
+    showRegisteredToast(data.devices.length, data.name);
+    setTimeout(() => { row.style.display = 'none'; }, 410);
+  }, 380);
 }
 
 function addSelected() {
