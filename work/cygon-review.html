@@ -595,7 +595,7 @@
   .needs-review-row {
     display: flex; align-items: center; gap: 12px;
     padding: 14px 16px; background: white;
-    border: 1px solid #d0d4e4;
+    border: 1px solid #d0d4e4; border-left: 3px solid #df2f4a;
     border-radius: 12px; margin-bottom: 8px;
   }
   .needs-review-icon {
@@ -896,8 +896,8 @@
 
       <!-- PAGE-LEVEL TABS: All / New / Inventory -->
       <div class="page-tabs-strip fade-up fade-up-4">
-        <button class="page-tab" onclick="switchFunctionalTab('all',this)">All</button>
-        <button class="page-tab page-tab--active" onclick="switchFunctionalTab('new',this)">New</button>
+        <button class="page-tab page-tab--active" onclick="switchFunctionalTab('all',this)">All</button>
+        <button class="page-tab" onclick="switchFunctionalTab('new',this)">New</button>
         <button class="page-tab" onclick="switchFunctionalTab('registered',this)">Inventory</button>
       </div>
 
@@ -1133,7 +1133,7 @@
             </div>
 
             <!-- REQUIRES REVIEW -->
-            <p class="needs-review-heading">Recommended to add</p>
+            <p class="needs-review-heading">Requires Review</p>
             <div class="needs-review-row fade-up fade-up-5">
               <div class="needs-review-icon">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1167,9 +1167,9 @@
           </div><!-- /tab-new-section -->
 
           <!-- REGISTERED TAB CONTENT -->
-          <div id="tab-registered-section" style="display:none">
+          <div id="tab-registered-section">
           <!-- Location tabs (segmented control) -->
-          <div class="tabs-row" id="inv-loc-tabs">
+          <div class="tabs-row" id="inv-loc-tabs" style="display:none">
             <button class="tab-btn tab-btn--active" onclick="switchTabReg(this,'all')">All / 270</button>
             <button class="tab-btn" onclick="switchTabReg(this,'telaviv')">Tel Aviv / 122</button>
             <button class="tab-btn" onclick="switchTabReg(this,'jerusalem')">Jerusalem / 76</button>
