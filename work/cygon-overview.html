@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cygon — Device Inventory Overview</title>
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    background: #f6f7fb;
+    font-family: 'Figtree', system-ui, sans-serif;
+    color: #323338;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* ── TOP BAR ── */
+  .top-bar {
+    display: flex; align-items: center; gap: 16px;
+    height: 48px; padding: 8px 12px 8px 20px;
+    flex-shrink: 0; z-index: 2; position: relative;
+  }
+  .top-bar-left { flex: 1; display: flex; align-items: center; padding-top: 4px; }
+  .brand-mark { display: flex; align-items: center; gap: 8px; }
+  .brand-mark svg { width: 24px; height: 24px; display: block; }
+  .brand-name {
+    font-family: 'Figtree', sans-serif; font-size: 15px; font-weight: 600;
+    color: #1a1a2e; letter-spacing: -0.3px;
+  }
+  .top-bar-right { flex: 1; display: flex; align-items: center; justify-content: flex-end; gap: 8px; }
+  .top-bar-icons { display: flex; gap: 4px; align-items: center; }
+  .icon-btn {
+    width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
+    border-radius: 4px; cursor: pointer; border: none; background: transparent;
+    transition: background 140ms ease;
+  }
+  .icon-btn:hover { background: rgba(0,0,0,0.06); }
+  .top-bar-divider { width: 1px; height: 28px; background: #d0d4e4; flex-shrink: 0; }
+  .avatar-wrap {
+    width: 32px; height: 32px; border-radius: 100px; overflow: hidden; flex-shrink: 0;
+    background: #0073EA; display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 600; color: white; font-family: 'Figtree', sans-serif;
+  }
+
+  /* ── MAIN AREA ── */
+  .main-area { display: flex; flex: 1; min-height: 0; position: relative; z-index: 1; }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 12px; padding: 8px 8px 2px; flex-shrink: 0; z-index: 2; position: relative;
+  }
+  .sidebar-inner {
+    display: flex; flex-direction: column; align-items: center;
+    justify-content: space-between; flex: 1; width: 56px;
+  }
+  .sidebar-top { display: flex; flex-direction: column; gap: 4px; width: 100%; }
+  .sidebar-group { display: flex; flex-direction: column; gap: 4px; width: 100%; }
+  .sidebar-divider { display: flex; flex-direction: column; align-items: flex-start; padding: 12px 8px 8px; width: 100%; }
+  .sidebar-divider-line { width: 100%; height: 1px; background: #d0d4e4; }
+  .nav-item {
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    padding: 4px 0 8px; border-radius: 8px; width: 100%;
+    cursor: pointer; position: relative; transition: background 140ms ease;
+  }
+  .nav-item:hover { background: rgba(0,0,0,0.04); }
+  .nav-icon-area {
+    width: 32px; height: 32px; display: flex; align-items: center;
+    justify-content: center; border-radius: 8px; padding: 6px; flex-shrink: 0;
+  }
+  .nav-icon-area svg { width: 18px; height: 18px; display: block; }
+  .nav-item--active .nav-icon-area { background: #cce4ff; }
+  .nav-label {
+    font-size: 12px; font-weight: 400; color: #676879; text-align: center;
+    line-height: 12px; letter-spacing: -0.315px; white-space: nowrap;
+    overflow: hidden; text-overflow: ellipsis; min-width: 100%;
+  }
+  .nav-item--active .nav-label { font-weight: 500; color: #323338; }
+
+  /* ── CONTENT PANEL ── */
+  .content-panel {
+    flex: 1; min-width: 0;
+    background: linear-gradient(175.9deg, rgba(255,255,255,0.85) 0%, rgba(236,239,248,0.85) 78.641%);
+    border-top-left-radius: 16px; border-left: 1px solid #e7e9ef; border-top: 1px solid #e7e9ef;
+    display: flex; flex-direction: column; overflow: hidden; position: relative; z-index: 1;
+  }
+  .content-glow {
+    position: absolute; inset: 0; pointer-events: none; z-index: 0; overflow: hidden;
+    border-top-left-radius: 16px;
+  }
+  .content-glow::after {
+    content: '';
+    position: absolute;
+    width: 900px; height: 900px;
+    left: 50%; top: 50%; transform: translate(-50%, -50%);
+    background: radial-gradient(ellipse at center, rgba(200,210,230,0.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  /* ── OVERVIEW SCROLL AREA ── */
+  .overview-scroll {
+    flex: 1; min-height: 0; overflow-y: auto; padding: 32px 40px 40px;
+    display: flex; flex-direction: column; gap: 28px;
+    position: relative; z-index: 1;
+  }
+  .overview-scroll::-webkit-scrollbar { width: 5px; }
+  .overview-scroll::-webkit-scrollbar-track { background: transparent; }
+  .overview-scroll::-webkit-scrollbar-thumb { background: #d0d4e4; border-radius: 10px; }
+
+  /* ── PAGE HEADER ── */
+  .page-header { display: flex; flex-direction: column; gap: 2px; }
+  .page-greeting {
+    font-family: 'Crimson Pro', serif; font-size: 28px; font-weight: 400;
+    font-style: italic; color: #323338; line-height: 24px;
+    white-space: nowrap;
+  }
+
+  /* ── AI ASK BAR ── */
+  .piper-frame {
+    background: linear-gradient(180deg, rgba(236,239,248,0.5) 4.19%, rgba(255,255,255,0.5) 32.44%);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border: 1px solid white;
+    border-radius: 16px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.07);
+    padding: 12px;
+    flex-shrink: 0;
+  }
+  .piper-inner { background: white; border-radius: 16px; }
+  .piper-content { padding: 24px; display: flex; flex-direction: column; gap: 16px; }
+  .piper-input-row {
+    display: flex; align-items: center; gap: 10px;
+    background: white; border: 1px solid #e2e6ed; border-radius: 12px;
+    padding: 0 12px 0 10px; height: 50px;
+    box-shadow: 0 3px 10px rgba(121,89,182,0.04);
+    transition: border-color 160ms ease, box-shadow 160ms ease;
+  }
+  .piper-input-row:focus-within {
+    border-color: #c7d2fe;
+    box-shadow: 0 3px 10px rgba(121,89,182,0.04), 0 0 0 3px rgba(99,102,241,0.08);
+  }
+  .piper-mark {
+    width: 28px; height: 28px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: #eee7fa; border-radius: 9px;
+  }
+  .piper-mark svg { width: 18px; height: 18px; display: block; }
+  .piper-input {
+    flex: 1; border: none; outline: none; background: transparent;
+    font-family: 'Figtree', sans-serif; font-size: 16px; font-weight: 400;
+    color: #323338; line-height: 22px;
+  }
+  .piper-input::placeholder { color: #676879; }
+  .piper-kbd {
+    display: inline-flex; align-items: center;
+    font-family: 'Figtree', sans-serif; font-size: 12px; color: #676879; font-weight: 400;
+    background: #f6f4f7; border: 1px solid #eae5ed;
+    border-radius: 5px; padding: 2px 5px; flex-shrink: 0;
+    white-space: nowrap; line-height: 16px;
+  }
+  .piper-suggestions { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .piper-chip {
+    display: inline-flex; align-items: center; justify-content: center;
+    height: 32px; padding: 0 12px; border-radius: 100px;
+    font-family: 'Figtree', sans-serif; font-size: 14px; font-weight: 400;
+    color: #676879; line-height: 20px;
+    background: white; border: 1px solid #eae5ed;
+    cursor: pointer; white-space: nowrap;
+    transition: background 140ms ease, border-color 140ms ease, color 140ms ease;
+    text-decoration: none;
+  }
+  .piper-chip:hover { background: #eef2ff; border-color: #c7d2fe; color: #4338ca; }
+  .piper-send {
+    width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;
+    background: #0073EA; color: white; border: none; border-radius: 8px; cursor: pointer;
+    flex-shrink: 0; transition: background 140ms ease, opacity 140ms ease;
+  }
+  .piper-send:hover { background: #0060c7; }
+
+  /* ── WIDGETS CONTAINER ── */
+  .widgets-frame {
+    background: rgba(255,255,255,0.6);
+    border-radius: 24px;
+    padding: 24px;
+    display: flex; flex-direction: column; gap: 24px;
+  }
+  .widgets-top-row { display: flex; gap: 24px; }
+  .widgets-bottom-row { display: flex; gap: 24px; }
+  .widget-card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    flex: 1 0 0; min-width: 0;
+    display: flex; flex-direction: column;
+    overflow: hidden;
+  }
+  .widget-title {
+    font-family: 'Crimson Pro', serif;
+    font-style: italic; font-weight: 400;
+    font-size: 21px; color: #111827;
+    line-height: normal;
+  }
+  .widget-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 500; font-size: 38px;
+    color: #111827; line-height: normal;
+  }
+  .widget-number-secondary {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 500; font-size: 18px;
+    color: #6b7180; line-height: normal;
+  }
+
+  /* ── SEVERITY COLORS ── */
+  .badge-critical { background: #fde8ec; color: #9a1527; border-radius: 20px; padding: 4px 10px; font-size: 12px; font-weight: 700; font-family: 'Figtree', sans-serif; white-space: nowrap; }
+  .badge-high { background: #fef0e6; color: #8a3d06; border-radius: 20px; padding: 4px 10px; font-size: 12px; font-weight: 700; font-family: 'Figtree', sans-serif; white-space: nowrap; }
+  .badge-medium { background: #fff7ed; color: #a85d00; border-radius: 20px; padding: 4px 10px; font-size: 12px; font-weight: 700; font-family: 'Figtree', sans-serif; white-space: nowrap; }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: none; }
+  }
+  .fade-up { animation: fadeUp 340ms cubic-bezier(0.22,1,0.36,1) both; }
+  .fade-up-1 { animation-delay: 60ms; }
+  .fade-up-2 { animation-delay: 120ms; }
+  .fade-up-3 { animation-delay: 180ms; }
+  .fade-up-4 { animation-delay: 240ms; }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<header class="top-bar">
+  <div class="top-bar-left">
+    <div class="brand-mark">
+      <!-- Cygon logo mark -->
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="12" cy="12" r="9" stroke="#0073EA" stroke-width="2"/>
+        <circle cx="12" cy="12" r="4" fill="#0073EA" opacity="0.2"/>
+        <path d="M8.5 12a3.5 3.5 0 1 1 7 0" stroke="#0073EA" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="12" cy="12" r="1.5" fill="#0073EA"/>
+      </svg>
+      <span class="brand-name">Cygon</span>
+    </div>
+  </div>
+  <div class="top-bar-right">
+    <div class="top-bar-icons">
+      <!-- Notification bell -->
+      <button class="icon-btn" aria-label="Notifications">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#676879" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+          <circle cx="18" cy="6" r="3" fill="#dc2626" stroke="none"/>
+        </svg>
+      </button>
+      <!-- Settings -->
+      <button class="icon-btn" aria-label="Help">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#676879" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+        </svg>
+      </button>
+    </div>
+    <div class="top-bar-divider"></div>
+    <div class="avatar-wrap">RS</div>
+  </div>
+</header>
+
+<!-- MAIN AREA -->
+<div class="main-area">
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar" aria-label="Cygon navigation">
+    <div class="sidebar-inner">
+      <div class="sidebar-top">
+
+        <div class="sidebar-group">
+          <!-- Overview (active) -->
+          <div class="nav-item nav-item--active" title="Overview">
+            <div class="nav-icon-area">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#0073EA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
+                <rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
+              </svg>
+            </div>
+            <span class="nav-label">Overview</span>
+          </div>
+          <!-- History -->
+          <div class="nav-item" title="Audit History">
+            <div class="nav-icon-area">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#676879" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+              </svg>
+            </div>
+            <span class="nav-label">History</span>
+          </div>
+        </div>
+
+        <div class="sidebar-divider"><div class="sidebar-divider-line"></div></div>
+
+        <div class="sidebar-group">
+          <!-- Devices -->
+          <div class="nav-item" title="Devices">
+            <div class="nav-icon-area">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#676879" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="6" width="20" height="12" rx="2"/><path d="M2 10h20"/><path d="M6 14h.01M10 14h.01"/>
+              </svg>
+            </div>
+            <span class="nav-label">Devices</span>
+          </div>
+          <!-- Alerts -->
+          <div class="nav-item" title="Alerts">
+            <div class="nav-icon-area">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#676879" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+              </svg>
+            </div>
+            <span class="nav-label">Alerts</span>
+          </div>
+        </div>
+
+        <div class="sidebar-divider"><div class="sidebar-divider-line"></div></div>
+
+        <div class="sidebar-group">
+          <!-- Sites -->
+          <div class="nav-item" title="Sites">
+            <div class="nav-icon-area">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#676879" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+              </svg>
+            </div>
+            <span class="nav-label">Sites</span>
+          </div>
+          <!-- Groups -->
+          <div class="nav-item" title="Groups">
+            <div class="nav-icon-area">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#676879" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+              </svg>
+            </div>
+            <span class="nav-label">Groups</span>
+          </div>
+        </div>
+
+        <div class="sidebar-divider"><div class="sidebar-divider-line"></div></div>
+
+        <div class="sidebar-group">
+          <!-- Policy -->
+          <div class="nav-item" title="Policy">
+            <div class="nav-icon-area">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#676879" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              </svg>
+            </div>
+            <span class="nav-label">Policy</span>
+          </div>
+          <!-- Inventory -->
+          <div class="nav-item" title="Inventory">
+            <div class="nav-icon-area">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#676879" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/>
+                <rect x="9" y="3" width="6" height="4" rx="2"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="13" y2="16"/>
+              </svg>
+            </div>
+            <span class="nav-label">Inventory</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Settings (bottom) -->
+      <div class="nav-item" title="Settings" style="margin-bottom: 4px;">
+        <div class="nav-icon-area">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#676879" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+          </svg>
+        </div>
+        <span class="nav-label">Settings</span>
+      </div>
+
+    </div>
+  </nav>
+
+  <!-- CONTENT PANEL -->
+  <main class="content-panel">
+
+    <div class="content-glow" aria-hidden="true"></div>
+
+    <div class="overview-scroll">
+
+      <!-- PAGE HEADER -->
+      <div class="page-header fade-up">
+        <h1 class="page-greeting">Good morning, Roni</h1>
+      </div>
+
+      <!-- STATUS BRIEF -->
+      <div class="widgets-frame fade-up fade-up-1" style="flex-direction:row;padding:20px;gap:16px;">
+
+          <!-- AI Brief card -->
+          <div style="flex:5;min-width:0;background:white;border-radius:12px;padding:20px 24px;display:flex;flex-direction:column;gap:14px;">
+
+            <!-- Label -->
+            <div style="display:flex;align-items:center;gap:7px;">
+              <div style="width:22px;height:22px;display:flex;align-items:center;justify-content:center;background:#eee7fa;border-radius:7px;flex-shrink:0;">
+                <svg viewBox="0 0 18 18" fill="none" width="12" height="12">
+                  <path d="M9 2L10.5 7H15.5L11.5 10L13 15L9 12L5 15L6.5 10L2.5 7H7.5L9 2Z" fill="#7c5cbf" opacity="0.9"/>
+                </svg>
+              </div>
+              <span style="font-size:12px;font-weight:600;color:#676879;letter-spacing:0.07em;text-transform:uppercase;font-family:'Figtree',sans-serif;">Cygon Intelligence</span>
+            </div>
+
+            <!-- Headline -->
+            <span style="font-family:'Crimson Pro',serif;font-style:italic;font-weight:400;font-size:26px;color:#111827;line-height:1.3;">74 familiar devices.<br>One clear next step.</span>
+
+            <!-- Body -->
+            <p style="font-size:14px;color:#676879;font-family:'Figtree',sans-serif;line-height:1.6;margin:0;">I matched Smart TVs, door locks and access points to your hotel's systems. See how I matched them before adding to your inventory.</p>
+
+            <!-- Footer -->
+            <div style="display:flex;align-items:center;gap:10px;margin-top:2px;">
+              <span style="font-size:13px;color:#676879;background:white;border:1px solid #e2e6ed;border-radius:100px;padding:5px 13px;font-family:'Figtree',sans-serif;white-space:nowrap;">Ready for your review</span>
+              <button style="display:flex;align-items:center;gap:7px;background:#0073EA;color:white;border:none;border-radius:8px;padding:9px 16px;font-size:14px;font-weight:500;font-family:'Figtree',sans-serif;cursor:pointer;white-space:nowrap;" onmouseover="this.style.background='#0060c7'" onmouseout="this.style.background='#0073EA'">
+                Review 74 devices
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M8 3l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+            </div>
+
+          </div>
+
+          <!-- Anomaly Alert card -->
+          <div style="flex:3;min-width:0;background:white;border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:12px;">
+
+            <!-- Header -->
+            <div style="display:flex;align-items:flex-start;gap:9px;">
+              <div style="width:28px;height:28px;border-radius:8px;background:#fde8ec;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9a1527" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/>
+                </svg>
+              </div>
+              <span style="font-size:15px;font-weight:600;color:#111827;font-family:'Figtree',sans-serif;line-height:1.4;">One device needs<br>your attention</span>
+            </div>
+
+            <!-- Badge -->
+            <span class="badge-critical" style="align-self:flex-start;">Critical priority</span>
+
+            <!-- Device detail -->
+            <div style="display:flex;flex-direction:column;gap:5px;">
+              <span style="font-size:14px;font-weight:600;color:#111827;font-family:'Figtree',sans-serif;line-height:1.4;">Reolink camera · Floor 7, Tel Aviv</span>
+              <span style="font-size:13px;color:#676879;font-family:'Figtree',sans-serif;line-height:1.5;">Connected to a public network instead of Seaside-CCTV. Can't be added to inventory until this is resolved.</span>
+            </div>
+
+            <!-- CTA -->
+            <a href="#" style="display:inline-flex;align-items:center;gap:5px;font-size:14px;font-weight:500;color:#9a1527;font-family:'Figtree',sans-serif;text-decoration:none;margin-top:auto;">
+              Review this device
+              <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M8 3l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+
+          </div>
+
+      </div><!-- /STATUS BRIEF -->
+
+      <!-- WIDGETS -->
+      <div class="widgets-frame fade-up fade-up-2">
+
+        <!-- ROW 1: AI Recommendations | Devices by Type | Review Status -->
+        <div class="widgets-top-row">
+
+          <!-- AI Inventory Recommendations -->
+          <div class="widget-card">
+            <span class="widget-title">Devices ready to add</span>
+            <div style="height:20px;"></div>
+
+            <!-- Main number -->
+            <div style="display:flex;align-items:flex-end;gap:8px;">
+              <span class="widget-number">74</span>
+              <span style="font-family:'Figtree',sans-serif;font-size:14px;color:#676879;line-height:1;margin-bottom:6px;">devices to add</span>
+            </div>
+            <div style="height:12px;"></div>
+
+            <!-- Confidence bar -->
+            <div style="height:8px;border-radius:4px;overflow:hidden;display:flex;gap:2px;">
+              <div style="flex:74;background:#22c55e;border-radius:3px 0 0 3px;"></div>
+              <div style="flex:9;background:#f59e0b;"></div>
+              <div style="flex:1;background:#ef4444;border-radius:0 3px 3px 0;"></div>
+            </div>
+            <div style="height:14px;"></div>
+
+            <!-- Legend -->
+            <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+              <div style="display:flex;align-items:center;gap:5px;">
+                <div style="width:7px;height:7px;border-radius:50%;background:#22c55e;"></div>
+                <span style="font-size:12px;color:#676879;font-family:'Figtree',sans-serif;"><span style="font-weight:600;color:#323338;">74</span> Approved</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:5px;">
+                <div style="width:7px;height:7px;border-radius:50%;background:#f59e0b;"></div>
+                <span style="font-size:12px;color:#676879;font-family:'Figtree',sans-serif;"><span style="font-weight:600;color:#323338;">9</span> Needs review</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:5px;">
+                <div style="width:7px;height:7px;border-radius:50%;background:#ef4444;"></div>
+                <span style="font-size:12px;color:#676879;font-family:'Figtree',sans-serif;"><span style="font-weight:600;color:#323338;">1</span> Blocked</span>
+              </div>
+            </div>
+            <div style="height:20px;"></div>
+
+            <!-- System chips -->
+            <div style="display:flex;flex-direction:column;gap:7px;">
+              <div style="display:flex;align-items:center;gap:7px;">
+                <div style="width:18px;height:18px;border-radius:5px;background:#dcfce7;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                  <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><polyline points="1.5,5.5 4,8 8.5,2" stroke="#16a34a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+                <span style="font-size:13px;color:#323338;font-family:'Figtree',sans-serif;">Smart TVs (Samsung/LG) — <strong>47</strong></span>
+              </div>
+              <div style="display:flex;align-items:center;gap:7px;">
+                <div style="width:18px;height:18px;border-radius:5px;background:#dcfce7;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                  <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><polyline points="1.5,5.5 4,8 8.5,2" stroke="#16a34a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+                <span style="font-size:13px;color:#323338;font-family:'Figtree',sans-serif;">Door Locks (ASSA ABLOY) — <strong>18</strong></span>
+              </div>
+              <div style="display:flex;align-items:center;gap:7px;">
+                <div style="width:18px;height:18px;border-radius:5px;background:#dcfce7;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                  <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><polyline points="1.5,5.5 4,8 8.5,2" stroke="#16a34a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+                <span style="font-size:13px;color:#323338;font-family:'Figtree',sans-serif;">Access Points (Ubiquiti) — <strong>9</strong></span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Devices by Type (donut arc) -->
+          <div class="widget-card">
+            <div style="display:flex;align-items:center;justify-content:space-between;width:100%;">
+              <span class="widget-title">Devices by type</span>
+              <a href="#" style="font-size:14px;color:#676879;text-decoration:none;font-family:'Figtree',sans-serif;">View All</a>
+            </div>
+            <div style="height:20px;"></div>
+            <div style="display:flex;align-items:center;gap:16px;">
+
+              <!-- Legend -->
+              <div style="display:flex;flex-direction:column;gap:14px;flex:1;">
+                <div style="display:flex;align-items:flex-start;gap:7px;">
+                  <div style="width:7px;height:7px;border-radius:50%;background:#93c5fd;flex-shrink:0;margin-top:4px;"></div>
+                  <span style="font-size:13px;color:#323338;line-height:18px;"><strong>52%</strong> Smart TVs (47)</span>
+                </div>
+                <div style="display:flex;align-items:flex-start;gap:7px;">
+                  <div style="width:7px;height:7px;border-radius:50%;background:#86efac;flex-shrink:0;margin-top:4px;"></div>
+                  <span style="font-size:13px;color:#323338;line-height:18px;"><strong>20%</strong> Door Locks (18)</span>
+                </div>
+                <div style="display:flex;align-items:flex-start;gap:7px;">
+                  <div style="width:7px;height:7px;border-radius:50%;background:#fca5a5;flex-shrink:0;margin-top:4px;"></div>
+                  <span style="font-size:13px;color:#323338;line-height:18px;"><strong>10%</strong> Cameras (9)</span>
+                </div>
+                <div style="display:flex;align-items:flex-start;gap:7px;">
+                  <div style="width:7px;height:7px;border-radius:50%;background:#c4b5fd;flex-shrink:0;margin-top:4px;"></div>
+                  <span style="font-size:13px;color:#323338;line-height:18px;"><strong>18%</strong> Other (16)</span>
+                </div>
+              </div>
+
+              <!-- C-arc donut -->
+              <svg width="110" height="110" viewBox="0 0 120 110" style="flex-shrink:0;">
+                <path d="M 30.3 81.7 A 42 42 0 1 1 89.7 81.7" fill="none" stroke="#f1f5f9" stroke-width="14" stroke-linecap="butt"/>
+                <path d="M 30.3 81.7 A 42 42 0 1 1 89.7 81.7" fill="none" stroke="#93c5fd" stroke-width="14" stroke-linecap="butt" pathLength="100" stroke-dasharray="51 49" stroke-dashoffset="0"/>
+                <path d="M 30.3 81.7 A 42 42 0 1 1 89.7 81.7" fill="none" stroke="#86efac" stroke-width="14" stroke-linecap="butt" pathLength="100" stroke-dasharray="20 80" stroke-dashoffset="-53"/>
+                <path d="M 30.3 81.7 A 42 42 0 1 1 89.7 81.7" fill="none" stroke="#fca5a5" stroke-width="14" stroke-linecap="butt" pathLength="100" stroke-dasharray="10 90" stroke-dashoffset="-75"/>
+                <path d="M 30.3 81.7 A 42 42 0 1 1 89.7 81.7" fill="none" stroke="#c4b5fd" stroke-width="14" stroke-linecap="butt" pathLength="100" stroke-dasharray="17 83" stroke-dashoffset="-87"/>
+              </svg>
+            </div>
+          </div>
+
+          <!-- Coverage by Location -->
+          <div class="widget-card">
+            <span class="widget-title">Coverage by location</span>
+            <div style="height:26px;"></div>
+            <div style="display:flex;flex-direction:column;gap:14px;width:100%;">
+
+              <!-- Tel Aviv -->
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <div style="display:flex;align-items:center;justify-content:space-between;">
+                  <span style="font-size:14px;color:#323338;font-family:'Figtree',sans-serif;font-weight:500;">Tel Aviv</span>
+                  <span style="font-size:13px;color:#676879;font-family:'Figtree',sans-serif;">61 / 90</span>
+                </div>
+                <div style="height:6px;background:#e2e6ed;border-radius:3px;overflow:hidden;position:relative;">
+                  <div style="position:absolute;left:0;top:0;height:6px;width:68%;background:#0073EA;border-radius:3px;"></div>
+                </div>
+                <span style="font-size:12px;color:#676879;font-family:'Figtree',sans-serif;">Seaside-IoT · Seaside-CCTV · BLE</span>
+              </div>
+
+              <!-- Jerusalem -->
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <div style="display:flex;align-items:center;justify-content:space-between;">
+                  <span style="font-size:14px;color:#323338;font-family:'Figtree',sans-serif;font-weight:500;">Jerusalem</span>
+                  <span style="font-size:13px;color:#676879;font-family:'Figtree',sans-serif;">28 / 50</span>
+                </div>
+                <div style="height:6px;background:#e2e6ed;border-radius:3px;overflow:hidden;position:relative;">
+                  <div style="position:absolute;left:0;top:0;height:6px;width:56%;background:#0073EA;border-radius:3px;"></div>
+                </div>
+                <span style="font-size:12px;color:#676879;font-family:'Figtree',sans-serif;">Seaside-IoT · Seaside-Mgmt</span>
+              </div>
+
+              <!-- Eilat -->
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <div style="display:flex;align-items:center;justify-content:space-between;">
+                  <div style="display:flex;align-items:center;gap:6px;">
+                    <span style="font-size:14px;color:#323338;font-family:'Figtree',sans-serif;font-weight:500;">Eilat</span>
+                    <span style="font-size:12px;background:#fef3c7;color:#92400e;border-radius:4px;padding:3px 8px;font-family:'Figtree',sans-serif;font-weight:500;">In progress</span>
+                  </div>
+                  <span style="font-size:13px;color:#676879;font-family:'Figtree',sans-serif;">1 / 20</span>
+                </div>
+                <div style="height:6px;background:#e2e6ed;border-radius:3px;overflow:hidden;position:relative;">
+                  <div style="position:absolute;left:0;top:0;height:6px;width:5%;background:#f59e0b;border-radius:3px;"></div>
+                </div>
+                <span style="font-size:12px;color:#676879;font-family:'Figtree',sans-serif;">Honeywell HVAC only</span>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ROW 2: Top at Risk | Findings | Providers -->
+        <div class="widgets-bottom-row">
+
+          <!-- Top devices at risk (anomalies) -->
+          <div class="widget-card" style="display:flex;flex-direction:column;">
+            <span class="widget-title">Devices needing attention</span>
+            <div style="height:24px;"></div>
+            <div style="display:flex;flex-direction:column;justify-content:space-between;flex:1;gap:16px;">
+
+              <!-- Reolink CRITICAL -->
+              <div style="display:flex;align-items:center;gap:8px;">
+                <div style="width:32px;height:32px;border-radius:8px;background:#fde8ec;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9a1527" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/>
+                  </svg>
+                </div>
+                <div style="flex:1;min-width:0;">
+                  <div style="font-size:12px;color:#676879;line-height:1.4;font-family:'Figtree',sans-serif;">Seaside-CCTV · Floor 7, Tel Aviv</div>
+                  <div style="font-size:12px;font-weight:600;color:#323338;line-height:1.4;font-family:'Figtree',sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Reolink (EC:71:DB:8C:98:5A)</div>
+                  <div style="font-size:12px;color:#676879;line-height:1.4;font-family:'Figtree',sans-serif;">Not in Inventory · cannot add</div>
+                </div>
+                <span class="badge-critical" style="flex-shrink:0;">CRITICAL</span>
+              </div>
+
+              <!-- Hikvision MEDIUM -->
+              <div style="display:flex;align-items:center;gap:8px;">
+                <div style="width:32px;height:32px;border-radius:8px;background:#fff7ed;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a85d00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/>
+                  </svg>
+                </div>
+                <div style="flex:1;min-width:0;">
+                  <div style="font-size:12px;color:#676879;line-height:1.4;font-family:'Figtree',sans-serif;">Seaside-CCTV · Floor 5, Jerusalem</div>
+                  <div style="font-size:12px;font-weight:600;color:#323338;line-height:1.4;font-family:'Figtree',sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Hikvision (BC:AD:28:F9:0F:2D)</div>
+                  <div style="font-size:12px;color:#676879;line-height:1.4;font-family:'Figtree',sans-serif;">Wrong network · running without management</div>
+                </div>
+                <span class="badge-medium" style="flex-shrink:0;">MEDIUM</span>
+              </div>
+
+              <!-- TP-Link IoT LOW -->
+              <div style="display:flex;align-items:center;gap:8px;">
+                <div style="width:32px;height:32px;border-radius:8px;background:#f1f5f9;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/><path d="M4.93 4.93l14.14 14.14"/>
+                  </svg>
+                </div>
+                <div style="flex:1;min-width:0;">
+                  <div style="font-size:12px;color:#676879;line-height:1.4;font-family:'Figtree',sans-serif;">Guest WiFi · Jerusalem</div>
+                  <div style="font-size:12px;font-weight:600;color:#323338;line-height:1.4;font-family:'Figtree',sans-serif;">TP-Link + Sonos (2 devices)</div>
+                  <div style="font-size:12px;color:#676879;line-height:1.4;font-family:'Figtree',sans-serif;">Personal device · can't be managed</div>
+                </div>
+                <span style="background:#f1f5f9;color:#6b7280;border-radius:20px;padding:4px 10px;font-size:12px;font-weight:600;font-family:'Figtree',sans-serif;white-space:nowrap;flex-shrink:0;">LOW</span>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Violations / Findings -->
+          <div class="widget-card">
+            <span class="widget-title">Policy issues</span>
+            <div style="height:24px;"></div>
+            <div style="display:flex;flex-direction:column;gap:16px;">
+
+              <div style="border:1px solid #eae5ed;border-radius:10px;background:white;padding:12px 14px;display:flex;flex-direction:column;gap:6px;">
+                <div style="display:flex;align-items:center;justify-content:space-between;">
+                  <span style="font-size:14px;font-weight:700;color:#101024;font-family:'Figtree',sans-serif;">Unmanaged Camera on CCTV</span>
+                  <span class="badge-critical">CRITICAL</span>
+                </div>
+                <p style="font-size:14px;color:#50505d;font-family:'Figtree',sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.4;margin:0;">Reolink detected on security VLAN — not in Inventory</p>
+                <a href="#" style="font-size:12px;color:#0073ea;font-family:'Figtree',sans-serif;text-decoration:none;">See details</a>
+              </div>
+
+              <div style="border:1px solid #eae5ed;border-radius:10px;background:white;padding:12px 14px;display:flex;flex-direction:column;gap:6px;">
+                <div style="display:flex;align-items:center;justify-content:space-between;">
+                  <span style="font-size:14px;font-weight:700;color:#101024;font-family:'Figtree',sans-serif;">IoT on Guest Network</span>
+                  <span class="badge-medium">MEDIUM</span>
+                </div>
+                <p style="font-size:14px;color:#50505d;font-family:'Figtree',sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.4;margin:0;">TP-Link + Sonos on guest WiFi — not allowed on this network</p>
+                <a href="#" style="font-size:12px;color:#0073ea;font-family:'Figtree',sans-serif;text-decoration:none;">See details</a>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Devices by provider -->
+          <div class="widget-card">
+            <span class="widget-title">Devices by provider</span>
+            <div style="height:24px;"></div>
+            <div style="display:flex;flex-direction:column;gap:22px;padding:0 9px;">
+
+              <div style="display:flex;gap:0;justify-content:space-between;">
+                <!-- Samsung/LG -->
+                <div style="display:flex;flex-direction:column;justify-content:space-between;height:88px;width:94px;">
+                  <div style="display:flex;align-items:center;gap:5px;">
+                    <div style="width:22px;height:22px;border-radius:5px;background:#e0f2fe;display:flex;align-items:center;justify-content:center;">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0369a1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="7" width="20" height="13" rx="2"/><polyline points="17 2 12 7 7 2"/>
+                      </svg>
+                    </div>
+                    <span style="font-size:11px;color:#676879;font-family:'Figtree',sans-serif;font-weight:500;">Samsung/LG</span>
+                  </div>
+                  <div style="display:flex;flex-direction:column;gap:4px;">
+                    <span style="font-size:25px;font-weight:700;color:#101024;line-height:1.3;font-family:'Figtree',sans-serif;">47</span>
+                    <span style="font-size:13px;color:#50505d;line-height:1.3;font-family:'Figtree',sans-serif;">Smart TVs</span>
+                  </div>
+                </div>
+                <!-- ASSA ABLOY -->
+                <div style="display:flex;flex-direction:column;justify-content:space-between;height:88px;width:94px;">
+                  <div style="display:flex;align-items:center;gap:5px;">
+                    <div style="width:22px;height:22px;border-radius:5px;background:#f0fdf4;display:flex;align-items:center;justify-content:center;">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#166534" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                      </svg>
+                    </div>
+                    <span style="font-size:11px;color:#676879;font-family:'Figtree',sans-serif;font-weight:500;">ASSA ABLOY</span>
+                  </div>
+                  <div style="display:flex;flex-direction:column;gap:4px;">
+                    <span style="font-size:25px;font-weight:700;color:#101024;line-height:1.3;font-family:'Figtree',sans-serif;">18</span>
+                    <span style="font-size:13px;color:#50505d;line-height:1.3;font-family:'Figtree',sans-serif;">Door Locks</span>
+                  </div>
+                </div>
+              </div>
+
+              <div style="display:flex;gap:0;justify-content:space-between;">
+                <!-- Ubiquiti -->
+                <div style="display:flex;flex-direction:column;justify-content:space-between;height:88px;width:94px;">
+                  <div style="display:flex;align-items:center;gap:5px;">
+                    <div style="width:22px;height:22px;border-radius:5px;background:#f5f3ff;display:flex;align-items:center;justify-content:center;">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#6d28d9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/>
+                      </svg>
+                    </div>
+                    <span style="font-size:11px;color:#676879;font-family:'Figtree',sans-serif;font-weight:500;">Ubiquiti</span>
+                  </div>
+                  <div style="display:flex;flex-direction:column;gap:4px;">
+                    <span style="font-size:25px;font-weight:700;color:#101024;line-height:1.3;font-family:'Figtree',sans-serif;">9</span>
+                    <span style="font-size:13px;color:#50505d;line-height:1.3;font-family:'Figtree',sans-serif;">Access Points</span>
+                  </div>
+                </div>
+                <!-- Honeywell -->
+                <div style="display:flex;flex-direction:column;justify-content:space-between;height:88px;width:94px;">
+                  <div style="display:flex;align-items:center;gap:5px;">
+                    <div style="width:22px;height:22px;border-radius:5px;background:#fef9c3;display:flex;align-items:center;justify-content:center;">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#854d0e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/>
+                      </svg>
+                    </div>
+                    <span style="font-size:11px;color:#676879;font-family:'Figtree',sans-serif;font-weight:500;">Honeywell</span>
+                  </div>
+                  <div style="display:flex;flex-direction:column;gap:4px;">
+                    <span style="font-size:25px;font-weight:700;color:#101024;line-height:1.3;font-family:'Figtree',sans-serif;">9</span>
+                    <span style="font-size:13px;color:#50505d;line-height:1.3;font-family:'Figtree',sans-serif;">HVAC</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div><!-- /overview-scroll -->
+  </main>
+
+</div><!-- /main-area -->
+
+<script>
+</script>
+
+</body>
+</html>
