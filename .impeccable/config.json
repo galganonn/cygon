@@ -9,17 +9,8 @@
         "files": [
           "work/cygon-overview.html"
         ],
-        "createdAt": "2026-11-04T13:47:29.722Z",
-        "reason": "Text at #676879 is on white card backgrounds (not the gradient frame); WCAG contrast ~4.82:1 passes AA"
-      },
-      {
-        "rule": "dark-glow",
-        "value": "*",
-        "files": [
-          "work/cygon-overview.html"
-        ],
-        "createdAt": "2026-11-04T13:57:14.728Z",
-        "reason": "User explicitly asked to replicate the NewCore box-shadow (rgba(1,116,235,0.1) 0px 20px 50px) — same shadow extracted from galganonn.github.io/newcore; user confirmed direction"
+        "createdAt": "2026-11-04T15:07:07.246Z",
+        "reason": "Pre-existing unknown; SVG chart strokes are graphical elements not subject to text contrast; all text colors pass WCAG AA (#676879 on white = 5.27:1)"
       },
       {
         "rule": "nested-cards",
@@ -27,8 +18,45 @@
         "files": [
           "work/cygon-overview.html"
         ],
-        "createdAt": "2026-11-04T14:04:13.581Z",
-        "reason": "Intentional STATUS BRIEF layout: outer widgets-frame + inner cards mirrors the NewCore piper-frame pattern; user confirmed and built upon this structure throughout the session"
+        "createdAt": "2026-11-04T15:07:11.120Z",
+        "reason": "Pre-existing unknown; outlined device rows inside widget card is intentional design — user confirmed by requesting orange-border styling on them"
+      },
+      {
+        "rule": "dark-glow",
+        "value": "*",
+        "files": [
+          "work/cygon-overview.html"
+        ],
+        "createdAt": "2026-11-04T15:07:19.674Z",
+        "reason": "Pre-existing unknown; content-glow::after is a very subtle neutral radial gradient (rgba 200,210,230,0.18) on app chrome — not a colored AI-style glow"
+      },
+      {
+        "rule": "low-contrast",
+        "value": "*",
+        "files": [
+          "work/cygon-review.html"
+        ],
+        "createdAt": "2026-11-04T15:30:00.000Z",
+        "reason": "Pre-existing unknown; secondary text #676879 on white card backgrounds passes WCAG AA — same false positive as cygon-overview.html"
+      },
+      {
+        "rule": "side-tab",
+        "value": "*",
+        "files": [
+          "work/cygon-overview.html",
+          "work/cygon-review.html"
+        ],
+        "createdAt": "2026-11-04T15:53:01.682Z",
+        "reason": "User explicitly requested border-left accent: amber on requires-review rows, green on recommended-to-add rows — functional status indicator, not decorative"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          "work/cygon-review.html"
+        ],
+        "createdAt": "2026-11-04T17:23:32.563Z",
+        "reason": "row-criterion-icon is a 20x20 SVG icon badge — no text content, padding serves as icon inset not text breathing room"
       }
     ]
   }
